@@ -8,10 +8,16 @@
 				<xsl:for-each select="/xhtml:html/xhtml:body/xhtml:table">
 					<xsl:variable name="TablePos" select="position()"/>
 					<xsl:if test="normalize-space(xhtml:tr[1]/xhtml:td[1]//*[not(*)]/text())=normalize-space('Actors')">
-						<Domain>
-							<name>
+						<xsl:element name="Domain">
+							<xsl:attribute name="location">
+								<xsl:call-template name="FindHeaderOfTable" />
+							</xsl:attribute>
+							<xsl:element name="name">
+								<xsl:attribute name="location">
+									<xsl:call-template name="FindHeaderOfTable" />
+								</xsl:attribute>
 								<xsl:value-of select="xhtml:tr[3]/xhtml:td[1]//*[not(*)]/text()"/>
-							</name>
+							</xsl:element>
 							<xsl:call-template name="ParseTable">
 								<xsl:with-param name="RowName" select="'Actor'"/>
 								<xsl:with-param name="FirstRowOffset" select="'4'"/>
@@ -24,7 +30,7 @@
 								<xsl:with-param name="ElName4" select="'type'"/>
 								<xsl:with-param name="ColIdx4" select="2"/>
 							</xsl:call-template>
-						</Domain>
+						</xsl:element>
 					</xsl:if>
 				</xsl:for-each>
 			</ActorLibrary>
@@ -32,14 +38,24 @@
 				<xsl:for-each select="/xhtml:html/xhtml:body/xhtml:table">
 					<xsl:variable name="TablePos" select="position()"/>
 					<xsl:if test="normalize-space(xhtml:tr[1]/xhtml:td[1]//*[not(*)]/text())=normalize-space('Actors')">
-						<Domain>
-							<description>
+						<xsl:element name="Domain">
+							<xsl:attribute name="location">
+								<xsl:call-template name="FindHeaderOfTable" />
+							</xsl:attribute>
+							<xsl:element name="description">
+								<xsl:attribute name="location">
+									<xsl:call-template name="FindHeaderOfTable" />
+								</xsl:attribute>
 								<xsl:apply-templates select="xhtml:tr[3]/xhtml:td[2]//*[not(*)]"/>
-							</description>
-							<name>
+							</xsl:element>
+							
+							<xsl:element name="name">
+								<xsl:attribute name="location">
+									<xsl:call-template name="FindHeaderOfTable" />
+								</xsl:attribute>
 								<xsl:value-of select="xhtml:tr[3]/xhtml:td[1]//*[not(*)]/text()"/>
-							</name>
-						</Domain>
+							</xsl:element>
+						</xsl:element>
 					</xsl:if>
 				</xsl:for-each>
 			</DomainLibrary>
@@ -131,7 +147,10 @@
 							<xsl:for-each select="/xhtml:html/xhtml:body/xhtml:table[$TablePos]">
 								<xsl:for-each select="xhtml:tr[(position() > 2) and (position() &lt; 1000)]">
 									<xsl:if test="count(xhtml:td//*[not(*)][string-length(normalize-space(text()))>0])">
-										<Condition>
+										<xsl:element name="Condition">
+											<xsl:attribute name="location">
+												<xsl:call-template name="FindHeaderOfTable2" />
+											</xsl:attribute>
 											<xsl:call-template name="ParseCol">
 												<xsl:with-param name="ColIdx" select="4"/>
 												<xsl:with-param name="ElName" select="'assumption'"/>
@@ -145,6 +164,9 @@
 												<xsl:for-each select="xhtml:td[3]/xhtml:p">
 													<xsl:element name="PreCondition">
 														<xsl:element name="content">
+															<xsl:attribute name="location">
+																<xsl:call-template name="FindHeaderOfTable2" />
+															</xsl:attribute>
 															<xsl:apply-templates select="."/>
 														</xsl:element>					
 													</xsl:element>
@@ -156,7 +178,7 @@
 													<xsl:with-param name="ElName" select="'name'"/>
 												</xsl:call-template>
 											</referencedActor>
-										</Condition>
+										</xsl:element>
 									</xsl:if>
 								</xsl:for-each>
 							</xsl:for-each>
@@ -208,7 +230,10 @@
 						<xsl:value-of select="substring-after(substring-before($DomainsA,'&lt;/name&gt;'),'&lt;name&gt;')"/>
 					</xsl:variable>
 					<PrimaryDomain>
-						<name>
+						<xsl:element name="name">
+							<xsl:attribute name="location">
+								<xsl:call-template name="FindHeaderOfTable" />
+							</xsl:attribute>
 							<xsl:choose>
 								<xsl:when test="contains($Domains,',')">
 									<xsl:value-of select="substring-before($Domains,',')"/>
@@ -217,7 +242,7 @@
 									<xsl:value-of select="$Domains"/>
 								</xsl:otherwise>
 							</xsl:choose>
-						</name>
+						</xsl:element>
 					</PrimaryDomain>
 					<xsl:call-template name="split">
 						<xsl:with-param name="list" select="substring-after($Domains,',')"/>
@@ -251,10 +276,16 @@
 									<xsl:apply-templates select="."/>
 								</xsl:for-each>
 							</xsl:variable>
-							<Scenario>
-								<name>
+							<xsl:element name="Scenario">
+								<xsl:attribute name="location">
+									<xsl:call-template name="FindHeaderOfTable" />
+								</xsl:attribute>
+								<xsl:element name="name">
+									<xsl:attribute name="location">
+										<xsl:call-template name="FindHeaderOfTable" />
+									</xsl:attribute>
 									<xsl:value-of select="$thisScenario"/>
-								</name>			
+								</xsl:element>
 								<xsl:for-each select="/xhtml:html/xhtml:body/xhtml:table">
 									<xsl:variable name="TablePos" select="position()"/>													
 									<xsl:if test="normalize-space(xhtml:tr[1]/xhtml:td[1]//*[not(*)]/text())=normalize-space('Scenario Conditions')">
@@ -276,6 +307,9 @@
 														<xsl:if test="count(xhtml:td[6]//*[not(*)][string-length(normalize-space(text()))>0])">
 															<xsl:for-each select="xhtml:td[6]/xhtml:p">
 																<xsl:element name="postCondition">
+																	<xsl:attribute name="location">
+																		<xsl:call-template name="FindHeaderOfTable2" />
+																	</xsl:attribute>
 																	<xsl:apply-templates select="."/>				
 																</xsl:element>
 															</xsl:for-each>
@@ -283,6 +317,9 @@
 														<xsl:if test="count(xhtml:td[5]//*[not(*)][string-length(normalize-space(text()))>0])">
 															<xsl:for-each select="xhtml:td[5]/xhtml:p">
 																<xsl:element name="preCondition">
+																	<xsl:attribute name="location">
+																		<xsl:call-template name="FindHeaderOfTable2" />
+																	</xsl:attribute>
 																	<xsl:apply-templates select="."/>			
 																</xsl:element>
 															</xsl:for-each>
@@ -305,7 +342,10 @@
 								</xsl:for-each>		
 								<xsl:for-each select="xhtml:tr[(position() > 3) and (position() &lt; 1000)]">
 									<xsl:if test="count(xhtml:td//*[not(*)][string-length(normalize-space(text()))>0])">
-										<Step>
+										<xsl:element name="Step">
+											<xsl:attribute name="location">
+												<xsl:call-template name="FindHeaderOfTable2" />
+											</xsl:attribute>
 											<xsl:call-template name="ParseCol">
 												<xsl:with-param name="ColIdx" select="4"/>
 												<xsl:with-param name="ElName" select="'description'"/>
@@ -356,10 +396,10 @@
 													<xsl:with-param name="SplitHead" select="'&lt;Requirement&gt;&lt;id&gt;'"/>
 													<xsl:with-param name="SplitTail" select="'&lt;/id&gt;&lt;/Requirement&gt;'"/>																					
 												</xsl:call-template>																										
-										</Step>
+										</xsl:element>
 									</xsl:if>
 								</xsl:for-each>
-							</Scenario>
+							</xsl:element>
 						</xsl:if>						
 						<!--
 						<xsl:if test="normalize-space(xhtml:tr[1]/xhtml:td[1]//*[not(*)]/text())=normalize-space('Scenario Conditions')">
@@ -374,7 +414,10 @@
 											</xsl:if>
 										</xsl:variable>
 										<xsl:if test="$ScenarioName != ''">
-											<Scenario>
+											<xsl:element name="Scenario">
+												<xsl:attribute name="location">
+													<xsl:call-template name="FindHeaderOfTable2" />
+												</xsl:attribute>
 												<name>
 													<xsl:value-of select="$ScenarioName"/>
 												</name>
@@ -385,6 +428,9 @@
 												<xsl:if test="count(xhtml:td[6]//*[not(*)][string-length(normalize-space(text()))>0])">
 													<xsl:for-each select="xhtml:td[6]/xhtml:p">
 														<xsl:element name="postCondition">
+															<xsl:attribute name="location">
+																<xsl:call-template name="FindHeaderOfTable2" />
+															</xsl:attribute>
 															<xsl:apply-templates select="."/>				
 														</xsl:element>
 													</xsl:for-each>
@@ -392,6 +438,9 @@
 												<xsl:if test="count(xhtml:td[5]//*[not(*)][string-length(normalize-space(text()))>0])">
 													<xsl:for-each select="xhtml:td[5]/xhtml:p">
 														<xsl:element name="preCondition">
+															<xsl:attribute name="location">
+																<xsl:call-template name="FindHeaderOfTable2" />
+															</xsl:attribute>
 															<xsl:apply-templates select="."/>			
 														</xsl:element>
 													</xsl:for-each>
@@ -416,7 +465,10 @@
 														<xsl:if test="$thisScenario=$ScenarioName">
 															<xsl:for-each select="xhtml:tr[(position() > 3) and (position() &lt; 1000)]">
 																<xsl:if test="count(xhtml:td//*[not(*)][string-length(normalize-space(text()))>0])">
-																	<Step>
+																	<xsl:element name="Step">
+																		<xsl:attribute name="location">
+																			<xsl:call-template name="FindHeaderOfTable2" />
+																		</xsl:attribute>
 																		<xsl:call-template name="ParseCol">
 																			<xsl:with-param name="ColIdx" select="4"/>
 																			<xsl:with-param name="ElName" select="'description'"/>
@@ -461,19 +513,19 @@
 																				</xsl:call-template>
 																			</InformationModel>
 																		</xsl:if>
-																			<xsl:call-template name="ParseCol">
-																				<xsl:with-param name="ColIdx" select="9"/>
-																				<xsl:with-param name="ElName" select="'id'"/>
-																				<xsl:with-param name="SplitHead" select="'&lt;Requirement&gt;&lt;id&gt;'"/>
-																				<xsl:with-param name="SplitTail" select="'&lt;/id&gt;&lt;/Requirement&gt;'"/>																					
-																			</xsl:call-template>																										
-																	</Step>
+																		<xsl:call-template name="ParseCol">
+																			<xsl:with-param name="ColIdx" select="9"/>
+																			<xsl:with-param name="ElName" select="'id'"/>
+																			<xsl:with-param name="SplitHead" select="'&lt;Requirement&gt;&lt;id&gt;'"/>
+																			<xsl:with-param name="SplitTail" select="'&lt;/id&gt;&lt;/Requirement&gt;'"/>																					
+																		</xsl:call-template>																										
+																	</xsl:element>
 																</xsl:if>
 															</xsl:for-each>
 														</xsl:if>
 													</xsl:if>
 												</xsl:for-each>
-											</Scenario>
+											</xsl:element>
 										</xsl:if>
 									</xsl:if>
 								</xsl:for-each>
@@ -529,6 +581,18 @@
 					-->
 				</UseCase>
 			</UseCaseLibrary>
+			<Locations>
+				<xsl:for-each select="/xhtml:html/xhtml:body/xhtml:h1 | /xhtml:html/xhtml:body/xhtml:h2">
+					<xsl:element name="Location">
+						<id>
+							<xsl:value-of select="count(preceding-sibling::*) + 1"/>
+						</id>
+						<name>
+							<xsl:apply-templates select="."/>
+						</name>
+					</xsl:element>
+				</xsl:for-each>
+			</Locations>
 		</UC:UseCaseRepository>
 	</xsl:template>
 	<!-- 	
@@ -784,6 +848,7 @@
 				<xsl:if test="$RowName !=''">
 					<xsl:text disable-output-escaping="yes">&lt;</xsl:text>
 					<xsl:value-of select="$RowName"/>
+					<xsl:call-template name="FindHeader2" />
 					<xsl:text disable-output-escaping="yes">&gt;</xsl:text>
 				</xsl:if>
 				<xsl:call-template name="ParseCol">
@@ -894,6 +959,7 @@
 					<xsl:otherwise>
 						<xsl:text disable-output-escaping="yes">&lt;</xsl:text>
 						<xsl:value-of select="$ElName"/>
+						<xsl:call-template name="FindHeader2" />
 						<xsl:text disable-output-escaping="yes">&gt;</xsl:text>
 						<xsl:choose>
 							<xsl:when test="$EmitHTML != 0">
@@ -940,6 +1006,83 @@
 			</xsl:if>
 		</xsl:if>
 	</xsl:template>
+	
+	<xsl:template name="FindHeader">
+		<xsl:variable name="h1Index" select="count(preceding-sibling::xhtml:h1[1]/preceding-sibling::*)"/>
+		<xsl:variable name="h2Index" select="count(preceding-sibling::xhtml:h2[1]/preceding-sibling::*)"/>
+		<xsl:choose>
+			<xsl:when test="$h1Index > $h2Index">
+				<xsl:text disable-output-escaping="yes"> location="</xsl:text>
+				<xsl:value-of select="count(preceding-sibling::xhtml:h1[1]/preceding-sibling::*) + 1"/>
+				<xsl:text disable-output-escaping="yes">"</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text disable-output-escaping="yes"> location="</xsl:text>
+				<xsl:value-of select="count(preceding-sibling::xhtml:h1[1]/preceding-sibling::*) + 1"/>
+				<xsl:text disable-output-escaping="yes">.</xsl:text>
+				<xsl:value-of select="count(preceding-sibling::xhtml:h2[1]/preceding-sibling::*) + 1"/>
+				<xsl:text disable-output-escaping="yes">"</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template name="FindHeader2">
+		<xsl:variable name="h1Index" select="count(ancestor::xhtml:table/preceding-sibling::xhtml:h1[1]/preceding-sibling::*)"/>
+		<xsl:variable name="h2Index" select="count(ancestor::xhtml:table/preceding-sibling::xhtml:h2[1]/preceding-sibling::*)"/>
+		<xsl:choose>
+			<xsl:when test="$h1Index > $h2Index">
+				<xsl:text disable-output-escaping="yes"> location="</xsl:text>
+				<xsl:value-of select="count(ancestor::xhtml:table/preceding-sibling::xhtml:h1[1]/preceding-sibling::*) + 1"/>
+				<xsl:text disable-output-escaping="yes">"</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text disable-output-escaping="yes"> location="</xsl:text>
+				<xsl:value-of select="count(ancestor::xhtml:table/preceding-sibling::xhtml:h1[1]/preceding-sibling::*) + 1"/>
+				<xsl:text disable-output-escaping="yes">.</xsl:text>
+				<xsl:value-of select="count(ancestor::xhtml:table/preceding-sibling::xhtml:h2[1]/preceding-sibling::*) + 1"/>
+				<xsl:text disable-output-escaping="yes">"</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template name="FindHeaderOfTable">
+		<xsl:variable name="h1Index" select="count(preceding-sibling::xhtml:h1[1]/preceding-sibling::*)"/>
+		<xsl:variable name="h2Index" select="count(preceding-sibling::xhtml:h2[1]/preceding-sibling::*)"/>
+		<xsl:choose>
+			<xsl:when test="$h1Index > $h2Index">
+				<!-- <xsl:text disable-output-escaping="yes"> location="</xsl:text> -->
+				<xsl:value-of select="count(preceding-sibling::xhtml:h1[1]/preceding-sibling::*) + 1"/>
+				<!-- <xsl:text disable-output-escaping="yes">"</xsl:text> -->
+			</xsl:when>
+			<xsl:otherwise>
+				<!-- <xsl:text disable-output-escaping="yes"> location="</xsl:text> -->
+				<xsl:value-of select="count(preceding-sibling::xhtml:h1[1]/preceding-sibling::*) + 1"/>
+				<xsl:text disable-output-escaping="yes">.</xsl:text>
+				<xsl:value-of select="count(preceding-sibling::xhtml:h2[1]/preceding-sibling::*) + 1"/>
+				<!-- <xsl:text disable-output-escaping="yes">"</xsl:text> -->
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template name="FindHeaderOfTable2">
+		<xsl:variable name="h1Index" select="count(ancestor::xhtml:table/preceding-sibling::xhtml:h1[1]/preceding-sibling::*)"/>
+		<xsl:variable name="h2Index" select="count(ancestor::xhtml:table/preceding-sibling::xhtml:h2[1]/preceding-sibling::*)"/>
+		<xsl:choose>
+			<xsl:when test="$h1Index > $h2Index">
+				<!-- <xsl:text disable-output-escaping="yes"> location="</xsl:text> -->
+				<xsl:value-of select="count(ancestor::xhtml:table/preceding-sibling::xhtml:h1[1]/preceding-sibling::*) + 1"/>
+				<!-- <xsl:text disable-output-escaping="yes">"</xsl:text> -->
+			</xsl:when>
+			<xsl:otherwise>
+				<!-- <xsl:text disable-output-escaping="yes"> location="</xsl:text> -->
+				<xsl:value-of select="count(ancestor::xhtml:table/preceding-sibling::xhtml:h1[1]/preceding-sibling::*) + 1"/>
+				<xsl:text disable-output-escaping="yes">.</xsl:text>
+				<xsl:value-of select="count(ancestor::xhtml:table/preceding-sibling::xhtml:h2[1]/preceding-sibling::*) + 1"/>
+				<!-- <xsl:text disable-output-escaping="yes">"</xsl:text> -->
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
 	<xsl:template match="xhtml:h3">
 		<xsl:text disable-output-escaping="yes">&amp;#13;&amp;#10;</xsl:text>
 		<!-- cr -->
