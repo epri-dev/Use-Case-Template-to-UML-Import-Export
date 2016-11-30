@@ -53,13 +53,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_076C73DB11AC2BC0FDD02CCEA8A132E0"
+        "OwnerKey" = "8:_ED13CBDA21D418C7843B618AD26F9246"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_ED13CBDA21D418C7843B618AD26F9246"
+        "OwnerKey" = "8:_076C73DB11AC2BC0FDD02CCEA8A132E0"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -174,11 +174,6 @@
             "AssemblyAsmDisplayName" = "8:UCRepoClassLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_076C73DB11AC2BC0FDD02CCEA8A132E0"
-                    {
-                    "Name" = "8:UCRepoClassLibrary.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:UCRepoClassLibrary.dll"
             "TargetName" = "8:"
@@ -225,11 +220,6 @@
             "AssemblyAsmDisplayName" = "8:TidyManaged, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_ED13CBDA21D418C7843B618AD26F9246"
-                    {
-                    "Name" = "8:TidyManaged.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:TidyManaged.dll"
             "TargetName" = "8:"
@@ -327,15 +317,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:EAUseCasePlugin"
-        "ProductCode" = "8:{1490A5A6-B9F6-4C6E-BEDA-D27FD89BF496}"
-        "PackageCode" = "8:{41614BF2-9787-4F2A-8A50-159ADC734123}"
+        "ProductCode" = "8:{2C2584BB-EDBC-4906-AFB4-E9F60069E278}"
+        "PackageCode" = "8:{77BCFFBC-2B0C-46C8-ABE8-5C7122A58E7C}"
         "UpgradeCode" = "8:{9DDBEDD0-BE5D-4A4D-A5C9-723C5F94264F}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.6"
+        "ProductVersion" = "8:1.0.7"
         "Manufacturer" = "8:EPRi"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://www.epri.com/"

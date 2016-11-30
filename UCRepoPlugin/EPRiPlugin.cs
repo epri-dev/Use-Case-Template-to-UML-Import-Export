@@ -259,7 +259,7 @@ namespace EPRi
                 return;
             }
 
-            Properties.Settings.Default.ResourceFolder = strUserResourcesFolder;
+            Properties.Settings.Default.DefaultResourceFolder = strUserResourcesFolder;
             Properties.Settings.Default.Save();
         }
 

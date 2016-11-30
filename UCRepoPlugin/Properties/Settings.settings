@@ -2,11 +2,11 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="EPRi.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="ResourceFolder" Type="System.String" Scope="User">
-      <Value Profile="(Default)">INIT</Value>
-    </Setting>
     <Setting Name="EAPFile" Type="System.String" Scope="User">
       <Value Profile="(Default)">INIT</Value>
+    </Setting>
+    <Setting Name="DefaultResourceFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

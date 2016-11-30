@@ -42,7 +42,7 @@ namespace EPRi
         public void FormLogMessage(string strMsg)
         {
             Application.DoEvents();
-            Log(CleanInput(strMsg), LogMessageType.Message);
+            Log(strMsg, LogMessageType.Message);
         }
 
         public void FormLogInfo(string strType, string strMsg)
@@ -84,7 +84,7 @@ namespace EPRi
             // Replace invalid characters with empty strings.
             try
             {
-                return Regex.Replace(strIn, @"[^\w\s\.@-]", "", RegexOptions.None);
+                return Regex.Replace(strIn, @"[^\w\s\.\:@-\\]", "", RegexOptions.None);
             }
             // If we timeout when replacing invalid characters, 
             // we should return Empty.
@@ -104,8 +104,8 @@ namespace EPRi
             FolderBrowserDialog folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             try
             {
-                if (String.IsNullOrEmpty(Properties.Settings.Default.ResourceFolder) == false)
-                    folderBrowserDialog.SelectedPath = Properties.Settings.Default.ResourceFolder;
+                if (String.IsNullOrEmpty(Properties.Settings.Default.DefaultResourceFolder) == false)
+                    folderBrowserDialog.SelectedPath = Properties.Settings.Default.DefaultResourceFolder;
             }
             catch { }
 
@@ -114,8 +114,12 @@ namespace EPRi
 
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                Properties.Settings.Default.ResourceFolder = folderBrowserDialog.SelectedPath;
-                Properties.Settings.Default.Save();
+                try
+                {
+                    Properties.Settings.Default.DefaultResourceFolder = folderBrowserDialog.SelectedPath;
+                    Properties.Settings.Default.Save();
+                }
+                catch { }
 
                 this.ToggleButtons();
 
