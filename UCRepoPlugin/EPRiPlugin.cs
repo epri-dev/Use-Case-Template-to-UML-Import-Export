@@ -43,8 +43,8 @@ namespace EPRi
                     switch (MenuName)
                     {
                         case "":
-                            return "-&EPRi";
-                        case "-&EPRi":
+                            return "-&EPRI Use Case Importer";
+                        case "-&EPRI Use Case Importer":
                             if (context.ParentID == 0)
                             {
                                 string[] ar = { "&Import Use Case", "&Export Use Case", "-", "&Copy Sample Files", "&About" };
@@ -61,9 +61,9 @@ namespace EPRi
                 switch (MenuName)
                 {
                     case "":
-                        return "-&EPRi";
-                    case "-&EPRi":
-                        string[] ar = { "&Copy Sample Files", "About" };
+                        return "-&EPRI Use Case Importer";
+                    case "-&EPRI Use Case Importer":
+                        string[] ar = { "&Copy Sample Files", "&About" };
                         return ar;
                 }
             }

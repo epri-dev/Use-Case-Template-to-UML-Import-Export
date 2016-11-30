@@ -42,7 +42,7 @@ namespace EPRi
         public void FormLogMessage(string strMsg)
         {
             Application.DoEvents();
-            Log(strMsg, LogMessageType.Message);
+            Log(CleanInput(strMsg), LogMessageType.Message);
         }
 
         public void FormLogInfo(string strType, string strMsg)
@@ -56,19 +56,18 @@ namespace EPRi
         {
             Application.DoEvents();
 
-            Log(strMsg, LogMessageType.Error);
+            Log(CleanInput(strMsg), LogMessageType.Error);
         }
 
         private void Log(string strMsg, LogMessageType type)
         {
-
             if (Logs == null)
                 Logs = new List<LogMessage>();
 
             Logs.Add(new LogMessage
             {
                 type = LogMessageType.Error,
-                Message = String.Format("{0}\r\n", CleanInput(strMsg))
+                Message = String.Format("{0}\r\n", strMsg)
             });
 
             if (checkBox1.Checked || type != LogMessageType.Info)
@@ -85,7 +84,7 @@ namespace EPRi
             // Replace invalid characters with empty strings.
             try
             {
-                return Regex.Replace(strIn, @"[^\w\.@-]", "", RegexOptions.None);
+                return Regex.Replace(strIn, @"[^\w\s\.@-]", "", RegexOptions.None);
             }
             // If we timeout when replacing invalid characters, 
             // we should return Empty.
@@ -103,8 +102,12 @@ namespace EPRi
         private void Import()
         {
             FolderBrowserDialog folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            if (String.IsNullOrEmpty(Properties.Settings.Default.ResourceFolder) == false)
-                folderBrowserDialog.SelectedPath = Properties.Settings.Default.ResourceFolder;
+            try
+            {
+                if (String.IsNullOrEmpty(Properties.Settings.Default.ResourceFolder) == false)
+                    folderBrowserDialog.SelectedPath = Properties.Settings.Default.ResourceFolder;
+            }
+            catch { }
 
             //folderBrowserDialog.RootFolder = Environment.SpecialFolder.Personal;
             folderBrowserDialog.Description = "Select a folder for support data files.";
@@ -128,7 +131,6 @@ namespace EPRi
 
         private void ImportDocument(string supportFilePath)
         {
-            this.ToggleButtons();
             try
             {
                 EAImporter.LogMsgCallbackType myLogMsgCallback = new EAImporter.LogMsgCallbackType(this.FormLogInfo);
@@ -157,14 +159,11 @@ namespace EPRi
                 FormLogMessage("Something unexpected happened while importing. Import Aborted");
             }
 
-            this.ToggleButtons();
 
         }
 
         private void ImportXML(string supportFilePath)
         {
-
-            this.ToggleButtons();
             try
             {
                 EAImporter.LogMsgCallbackType myLogMsgCallback = new EAImporter.LogMsgCallbackType(this.FormLogInfo);
