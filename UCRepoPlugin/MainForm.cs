@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -19,6 +20,7 @@ namespace EPRi
         public EA.Repository mRepository;
         public string mFilePath;
         public string mType;
+        public string sharePath;
 
         public MainForm(EA.Repository Repository, string documentPath, string type)
         {
@@ -101,35 +103,14 @@ namespace EPRi
 
         private void Import()
         {
-            FolderBrowserDialog folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            try
-            {
-                if (String.IsNullOrEmpty(Properties.Settings.Default.DefaultResourceFolder) == false)
-                    folderBrowserDialog.SelectedPath = Properties.Settings.Default.DefaultResourceFolder;
-            }
-            catch { }
+            this.ToggleButtons();
 
-            //folderBrowserDialog.RootFolder = Environment.SpecialFolder.Personal;
-            folderBrowserDialog.Description = "Select a folder for support data files.";
+            if (mType == "DOCX")
+                ImportDocument(sharePath);
+            else if (mType == "XML")
+                ImportXML(sharePath);
 
-            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
-                    Properties.Settings.Default.DefaultResourceFolder = folderBrowserDialog.SelectedPath;
-                    Properties.Settings.Default.Save();
-                }
-                catch { }
-
-                this.ToggleButtons();
-
-                if (mType == "DOCX")
-                    ImportDocument(folderBrowserDialog.SelectedPath);
-                else if (mType == "XML")
-                    ImportXML(folderBrowserDialog.SelectedPath);
-
-                this.ToggleButtons();
-            }
+            this.ToggleButtons();
 
         }
 
@@ -226,6 +207,7 @@ namespace EPRi
             richTextBox1.SelectionLength = 0;
             richTextBox1.ScrollToCaret();
         }
+
 
         public void ToggleButtons()
         {

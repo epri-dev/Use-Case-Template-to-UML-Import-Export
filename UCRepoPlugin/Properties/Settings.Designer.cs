@@ -25,7 +25,7 @@ namespace EPRi.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("INIT")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string EAPFile {
             get {
                 return ((string)(this["EAPFile"]));
@@ -38,12 +38,12 @@ namespace EPRi.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DefaultResourceFolder {
+        public string ResourceFolder {
             get {
-                return ((string)(this["DefaultResourceFolder"]));
+                return ((string)(this["ResourceFolder"]));
             }
             set {
-                this["DefaultResourceFolder"] = value;
+                this["ResourceFolder"] = value;
             }
         }
     }

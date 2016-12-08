@@ -328,10 +328,17 @@ namespace UCRepoClassLibrary
             XmlWriter writer = XmlWriter.Create(sb, XWriterSettings);
 
             StringReader strXMLSource = new StringReader(parsed);
-            XDocument xmlTree = XDocument.Load(strXMLSource);
 
-            xslt.Transform(xmlTree.CreateReader(), writer);
-
+            try
+            {
+                XDocument xmlTree = XDocument.Load(strXMLSource);
+                xslt.Transform(xmlTree.CreateReader(), writer);
+            }
+            catch
+            {
+                LogError(LogErrorLevel.A, "The use case document selected is not in the expected format. Please see the sample file located at " + m_SharePath + "\\IEC_UseCaseTemplateGOOD.docx for an example of the correct format.");
+                return 1;
+            }
             writer.Close();
 
             XMLData = sb.ToString();

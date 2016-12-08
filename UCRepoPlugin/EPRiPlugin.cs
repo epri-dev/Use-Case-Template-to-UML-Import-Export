@@ -47,12 +47,12 @@ namespace EPRi
                         case "-&EPRI Use Case Importer":
                             if (context.ParentID == 0)
                             {
-                                string[] ar = { "&Import Use Case", "&Export Use Case", "-", "&Copy Sample Files", "&About" };
+                                string[] ar = { "&Import Use Case", "&Export Use Case", "-", "&First time config", "&About" };
                                 return ar;
                             }
                             else
                             {
-                                string[] ar = { "&Import Use Case", "-", "&Copy Sample Files", "&About" };
+                                string[] ar = { "&Import Use Case", "-", "&First time config", "&About" };
                                 return ar;
                             }
                     }
@@ -63,7 +63,7 @@ namespace EPRi
                     case "":
                         return "-&EPRI Use Case Importer";
                     case "-&EPRI Use Case Importer":
-                        string[] ar = { "&Copy Sample Files", "&About" };
+                        string[] ar = { "&First time config", "&About" };
                         return ar;
                 }
             }
@@ -115,8 +115,8 @@ namespace EPRi
                 case "&Export Use Case":
                     Export(Repository);
                     break;
-                case "&Copy Sample Files":
-                    CopySampleFiles();
+                case "&First time config":
+                    InitPlugin();
                     break;
                 case "&test":
                     var model = Repository.Models.GetByName("Usecaserepository");
@@ -140,26 +140,42 @@ namespace EPRi
 
         private void Import(EA.Repository Repository)
         {
-            //var shareExists = EAPluginImporter.CheckIfShareExists();
-            //if (shareExists)
-            {
-                OpenFileDialog dlg = new OpenFileDialog();
-                dlg.Filter = "Word 2007 Document(*.docx)|*.docx|XML Document(*.xml)|*.xml|All Files|*.docx;*.xml";
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Filter = "Word 2007 Document(*.docx)|*.docx|XML Document(*.xml)|*.xml|All Files|*.docx;*.xml";
 
-                if (dlg.ShowDialog() == DialogResult.OK)
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                string extension = String.Empty;
+                try
                 {
-                    if (Path.GetExtension(dlg.FileName) == ".docx")
-                        importWindow = new MainForm(Repository, dlg.FileName, "DOCX");
-                    else if (Path.GetExtension(dlg.FileName) == ".xml")
-                        importWindow = new MainForm(Repository, dlg.FileName, "XML");
-                    importWindow.ShowDialog();
+                    extension = Path.GetExtension(dlg.FileName);
                 }
+                catch { }
+
+
+                if (extension == ".docx")
+                    importWindow = new MainForm(Repository, dlg.FileName, "DOCX");
+                else if (extension == ".xml")
+                    importWindow = new MainForm(Repository, dlg.FileName, "XML");
+                else
+                {
+                    MessageBox.Show("Invalid file type selected. Only \".docx\" and \".xml\" files are accepted. please select a new file and try again.", "EPRi Use Case Plugin");
+                    return;
+                }
+
+                string sharePath = Utils.GetSharePath();
+                if (String.IsNullOrEmpty(sharePath))
+                {
+                    importWindow.Dispose();
+                    return;
+                }
+
+                copySampleFiles(sharePath);
+
+                importWindow.sharePath = sharePath;
+                importWindow.ShowDialog();
             }
-            //else
-            //{
-            //    MessageBox.Show("Please create a Data share folder first");
-            //    CreateNewUserDataFolder();
-            //}
+
         }
 
         private void Export(EA.Repository Repository)
@@ -168,19 +184,23 @@ namespace EPRi
             exportWindow.ShowDialog();
         }
 
-        private void CopySampleFiles()
+        private void InitPlugin()
         {
-            FolderBrowserDialog folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            string strUserResourcesFolder = Utils.GetSharePath();
+            if (String.IsNullOrEmpty(strUserResourcesFolder))
+                return;
 
-            folderBrowserDialog.Description = "Select a folder to copy sample data files.";
+            copySampleFiles(strUserResourcesFolder);
 
-            // Show the FolderBrowserDialog.
-            DialogResult result = folderBrowserDialog.ShowDialog();
-            if (result == DialogResult.OK)
+            var help = new HelpBox(strUserResourcesFolder);
+            help.ShowDialog();
+        }
+
+        private void copySampleFiles(string strUserResourcesFolder)
+        {
+            try
             {
-                string strUserResourcesFolder = folderBrowserDialog.SelectedPath;
-
-                try
+                if (!File.Exists(strUserResourcesFolder + "\\EmptyUCRepo.eap"))
                 {
                     using (Stream strm = Assembly.GetExecutingAssembly().GetManifestResourceStream("EPRi.Samples.EmptyUCRepo.eap"))
                     {
@@ -191,9 +211,12 @@ namespace EPRi
                         }
                     }
                 }
-                catch { }
+            }
+            catch { }
 
-                try
+            try
+            {
+                if (!File.Exists(strUserResourcesFolder + "\\ExchangeProfileXML.xml"))
                 {
                     using (Stream strm = Assembly.GetExecutingAssembly().GetManifestResourceStream("EPRi.Samples.ExchangeProfileXML.xml"))
                     {
@@ -204,9 +227,12 @@ namespace EPRi
                         }
                     }
                 }
-                catch { }
+            }
+            catch { }
 
-                try
+            try
+            {
+                if (!File.Exists(strUserResourcesFolder + "\\IEC_UseCaseTemplateGOOD.docx"))
                 {
                     using (Stream strm = Assembly.GetExecutingAssembly().GetManifestResourceStream("EPRi.Samples.IEC_UseCaseTemplateGOOD.docx"))
                     {
@@ -217,31 +243,19 @@ namespace EPRi
                         }
                     }
                 }
-                catch { }
-
-                MessageBox.Show("Files copied successfully.", "Success");
-
             }
+            catch { }
+
+            //MessageBox.Show("Files copied successfully.", "Success");
+
         }
 
+        
         private void CreateNewUserDataFolder()
         {
-            FolderBrowserDialog folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            folderBrowserDialog.RootFolder = Environment.SpecialFolder.Personal;
-
-            folderBrowserDialog.Description = "Select a folder for support data files. Creation of a new UCRepository folder is recommended. Sample files will automatically be copied to the specified folder.";
-            string strUserResourcesFolder;
-
-            // Show the FolderBrowserDialog.
-            DialogResult result = folderBrowserDialog.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                strUserResourcesFolder = folderBrowserDialog.SelectedPath;
-            }
-            else
-            {
+            string strUserResourcesFolder = Utils.GetSharePath();
+            if (String.IsNullOrEmpty(strUserResourcesFolder))
                 return;
-            }
 
             UCRepoClassLibrary.EAImporter theEAImporter;
 
@@ -259,25 +273,24 @@ namespace EPRi
                 return;
             }
 
-            Properties.Settings.Default.DefaultResourceFolder = strUserResourcesFolder;
+            Properties.Settings.Default.ResourceFolder = strUserResourcesFolder;
             Properties.Settings.Default.Save();
         }
 
+
         public void DataShareLog(string strType, string strMsg)
         {
-            MessageBox.Show(String.Format("{0}: {1}", strType, strMsg));
+            MessageBox.Show(String.Format("{0}: {1}", strType, strMsg), "EPRi Use Case Plugin");
         }
-
-
 
         public void FormLogMsg(string strType, string strMsg)
         {
-            MessageBox.Show(String.Format("{0}: {1}", strType, strMsg));
+            MessageBox.Show(String.Format("{0}: {1}", strType, strMsg), "EPRi Use Case Plugin");
         }
 
         public void FormLogError(string strType, string strMsg)
         {
-            MessageBox.Show(String.Format("{0}: {1}", strType, strMsg));
+            MessageBox.Show(String.Format("{0}: {1}", strType, strMsg), "EPRi Use Case Plugin");
         }
 
     }

@@ -181,8 +181,8 @@ namespace UCRepoClassLibrary
 
                 if (iErrCnt == 0)
                 {
-                    oFieldsValidator.ReplaceImageLinks("UseCaseRepository/InformationLibrary/" + oFieldsValidator["name"].Value);
-                    //oFieldsValidator.ReplaceImageLinks("UCRepo/InfoLib/" + Utils.GetShortText(name));
+                    //oFieldsValidator.ReplaceImageLinks("UseCaseRepository/InformationLibrary/" + oFieldsValidator["name"].Value);
+                    oFieldsValidator.ReplaceImageLinks("UseCaseRepository/infolibrary/" + Utils.GetShortText(oFieldsValidator["name"].Value));
 
                     iErrorCount = iErrorCount + AddInformationClass(eaInfoClassPackage, oFieldsValidator["name"].Value, oFieldsValidator["description"].Value, strRequirements);
                 }

@@ -69,6 +69,7 @@ namespace UCRepoClassLibrary
 
         private int m_NoUseCaseComponents = 0;
         private int m_NoUseCaseActors = 0;
+
         #endregion
 
         private int AddUCComponentToDiagram(EA.Package eAMainPackage, EA.Diagram diagram, int iElementID)
@@ -715,8 +716,8 @@ namespace UCRepoClassLibrary
 
             string strUseCasePath = "UseCaseRepository/UseCaseLibrary/ImportedUseCase/" + strPrimaryDomain + "/" + strID + " " + strName;
 
-            //oFieldsValidator.ReplaceImageLinks("UCRepo/UCLib/ImpUC/" + Utils.GetShortText(strPrimaryDomain) + "/" + Utils.GetShortText(strID + " " + strName));
-            oFieldsValidator.ReplaceImageLinks(strUseCasePath);
+            //oFieldsValidator.ReplaceImageLinks(strUseCasePath);
+            oFieldsValidator.ReplaceImageLinks("UseCaseRepository/UseCaseLibrary/ImportedUseCase/" + Utils.GetShortText(strPrimaryDomain) + "/" + Utils.GetShortText(strID + " " + strName));
 
             if (EAImporter.m_Packages.Add("UseCaseRepository/UseCaseLibrary", "ImportedUseCase") == null) { iErrorCount++; };
 

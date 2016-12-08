@@ -318,7 +318,8 @@ namespace UCRepoClassLibrary
 
                         if (iErrCnt == 0)
                         {
-                            oFieldsValidator.ReplaceImageLinks("UseCaseRepository/ActorLibrary" + "/" + oFieldsValidatorDomain["name"].Value + "/" + oFieldsValidator["name"].Value);
+                            //oFieldsValidator.ReplaceImageLinks("UseCaseRepository/ActorLibrary" + "/" + oFieldsValidatorDomain["name"].Value + "/" + oFieldsValidator["name"].Value);
+                            oFieldsValidator.ReplaceImageLinks("UseCaseRepository/actors/" + Utils.GetShortText(oFieldsValidatorDomain["name"].Value) + "/" + Utils.GetShortText(oFieldsValidator["name"].Value));
 
                             AddStereotype(elActor.Element("type").Value);
 

@@ -3,9 +3,9 @@
   <Profiles />
   <Settings>
     <Setting Name="EAPFile" Type="System.String" Scope="User">
-      <Value Profile="(Default)">INIT</Value>
+      <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="DefaultResourceFolder" Type="System.String" Scope="User">
+    <Setting Name="ResourceFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

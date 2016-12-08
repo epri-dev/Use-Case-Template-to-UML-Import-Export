@@ -91,7 +91,8 @@ namespace UCRepoClassLibrary
 
                 if (iErrCnt == 0)
                 {
-                    oFieldsValidator.ReplaceImageLinks("UseCaseRepository/DomainLibrary" + "/" + oFieldsValidator["name"].Value);
+                    //oFieldsValidator.ReplaceImageLinks("UseCaseRepository/DomainLibrary" + "/" + oFieldsValidator["name"].Value);
+                    oFieldsValidator.ReplaceImageLinks("UseCaseRepository/domains/" + Utils.GetShortText(oFieldsValidator["name"].Value));
 
                     EAImporter.LogMsg(EAImporter.LogMsgType.Info, "Importing domain: " + oFieldsValidator["name"].Value);
                     if (EAImporter.m_Packages.Add("UseCaseRepository/DomainLibrary", oFieldsValidator["name"].Value, oFieldsValidator["description"].Value, elDomain) == null) { iErrorCount++; };
