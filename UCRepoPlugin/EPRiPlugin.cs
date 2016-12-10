@@ -140,6 +140,13 @@ namespace EPRi
 
         private void Import(EA.Repository Repository)
         {
+            try
+            {
+                //Repository.GetProjectInterface().ReloadProject();
+                //Repository.OpenFile(Repository.ConnectionString);
+            }
+            catch { }
+
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.Filter = "Word 2007 Document(*.docx)|*.docx|XML Document(*.xml)|*.xml|All Files|*.docx;*.xml";
 
@@ -154,9 +161,9 @@ namespace EPRi
 
 
                 if (extension == ".docx")
-                    importWindow = new MainForm(Repository, dlg.FileName, "DOCX");
+                    importWindow = new MainForm(Repository, dlg.FileName, DocumentType.DOCX);
                 else if (extension == ".xml")
-                    importWindow = new MainForm(Repository, dlg.FileName, "XML");
+                    importWindow = new MainForm(Repository, dlg.FileName, DocumentType.XML);
                 else
                 {
                     MessageBox.Show("Invalid file type selected. Only \".docx\" and \".xml\" files are accepted. please select a new file and try again.", "EPRi Use Case Plugin");
@@ -180,6 +187,12 @@ namespace EPRi
 
         private void Export(EA.Repository Repository)
         {
+            try
+            {
+                Repository.OpenFile(Repository.ConnectionString);
+            }
+            catch { }
+
             exportWindow = new ExportForm(Repository);
             exportWindow.ShowDialog();
         }
@@ -250,7 +263,7 @@ namespace EPRi
 
         }
 
-        
+
         private void CreateNewUserDataFolder()
         {
             string strUserResourcesFolder = Utils.GetSharePath();

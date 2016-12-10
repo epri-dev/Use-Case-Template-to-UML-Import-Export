@@ -27,10 +27,11 @@ namespace EPRi
             sb.AppendLine("\nDirections to import Exchange Profile:");
             sb.AppendLine("\t1. Right Click on root node");
             sb.AppendLine("\t2. Click on Import Model from XML.");
-            sb.AppendLine("\t3. Select ExchangeProfile.xml from the sample folder");
-            sb.AppendLine("\t4. Import the xml as Root Model");
+            sb.AppendLine("\t3. Select ExchangeProfile.xml from the sample folder.");
+            sb.AppendLine("\t4. Import the xml as Root Model.");
+            sb.AppendLine("\t5. Re-open the Project file.");
 
-            richTextBox1.Text = sb.ToString();
+            textBoxDescription.Text = sb.ToString();
 
         }
     }

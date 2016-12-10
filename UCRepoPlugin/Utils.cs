@@ -7,6 +7,12 @@ using System.Windows.Forms;
 
 namespace EPRi
 {
+    public enum DocumentType
+    {
+        DOCX,
+        XML
+    }
+
     public class Utils
     {
         private static string checkAndCreateDefaultFolder()

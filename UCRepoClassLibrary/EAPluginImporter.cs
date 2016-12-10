@@ -125,7 +125,7 @@ namespace UCRepoClassLibrary
             }
             catch
             {
-                LogError(LogErrorLevel.A, "Unable to locate the Exchange Profile package. You can find the package in ExchangeProfileXML.xml copied with sample files. Once added to this project please retry import.");
+                LogError(LogErrorLevel.A, "Unable to locate Exchange Profile package.\r\nIf you have not loaded an Exchange Profile please use the ExchangeProfileXML.xml copied with sample files.\r\nIf you have already loaded an exchange profile, please reload your EAP file to apply these changes.");
                 return 1;
             }
 

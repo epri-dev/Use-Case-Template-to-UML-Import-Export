@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("EPRi EA Use Case Plugin")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("EPRi")]
+[assembly: AssemblyCompany("Electric Power Research Institute")]
 [assembly: AssemblyProduct("EPRiEAUseCasePlugin")]
 [assembly: AssemblyCopyright("Copyright © 2016 Electric Power Research Institute, Inc.")]
 [assembly: AssemblyTrademark("")]
@@ -28,5 +28,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.0.0.8")]
-[assembly: AssemblyFileVersion("1.0.0.8")]
+[assembly: AssemblyVersion("1.0.0.9")]
+[assembly: AssemblyFileVersion("1.0.0.9")]

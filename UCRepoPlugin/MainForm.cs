@@ -19,10 +19,10 @@ namespace EPRi
         private bool mAllowClosing = true;
         public EA.Repository mRepository;
         public string mFilePath;
-        public string mType;
+        public DocumentType mType;
         public string sharePath;
 
-        public MainForm(EA.Repository Repository, string documentPath, string type)
+        public MainForm(EA.Repository Repository, string documentPath, DocumentType type)
         {
             InitializeComponent();
             this.Load += MainForm_Load;
@@ -105,9 +105,9 @@ namespace EPRi
         {
             this.ToggleButtons();
 
-            if (mType == "DOCX")
+            if (mType == DocumentType.DOCX)
                 ImportDocument(sharePath);
-            else if (mType == "XML")
+            else if (mType == DocumentType.XML)
                 ImportXML(sharePath);
 
             this.ToggleButtons();
